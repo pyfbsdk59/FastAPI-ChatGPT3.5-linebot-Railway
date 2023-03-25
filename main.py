@@ -61,7 +61,7 @@ app = FastAPI()
 # Line Bot config
 
 @app.get("/") # 指定 api 路徑 (get方法)
-def hello():
+async def hello():
 	return "Hello World from Flask in a uWSGI Nginx Docker container with \
 	     Python 3.8 (from the example template)"
 
@@ -75,7 +75,7 @@ async def callback(request: Request):
         raise HTTPException(status_code=400, detail="Missing Parameters")
     return "OK"
 
-@handler.add(MessageEvent, message=(TextMessage))
+@handler.add(MessageEvent, message=TextMessage)
 def handling_message(event):
     #replyToken = event.reply_token
     
@@ -93,6 +93,3 @@ def handling_message(event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_msg))
 
 
-
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
